@@ -1,3 +1,4 @@
+var cors = require("cors");
 const express = require("express");
 class Server {
 	constructor() {
@@ -11,6 +12,8 @@ class Server {
 	}
 
 	middlewares() {
+		//CORS
+		this.app.use(cors());
 		//directorio publico (front)
 		this.app.use(express.static("public"));
 	}
