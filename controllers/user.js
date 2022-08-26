@@ -7,8 +7,12 @@ const getUsuarios = (req, res = response) => {
 };
 
 const postUsuarios = (req, res = response) => {
+	console.log(req);
+
+	const body = req.body;
 	res.json({
 		msg: "post API controller",
+		body,
 	});
 };
 
