@@ -5,6 +5,7 @@ class Server {
 		//Cuando instancie esta clase creare el nuevo servidor
 		this.app = express();
 		this.port = process.env.PORT;
+		this.usuariosPath = "/api/usuarios";
 		//Middlewares (funcion que siempre se ejecuta al levantar el servidor)
 		this.middlewares();
 		//Esto dispara el metodo que configura mis rutas
@@ -19,29 +20,7 @@ class Server {
 	}
 
 	routes() {
-		this.app.get("/api", (req, res) => {
-			res.json({
-				msg: "get API",
-			});
-		});
-
-		this.app.put("/api", (req, res) => {
-			res.json({
-				msg: "put API",
-			});
-		});
-
-		this.app.post("/api", (req, res) => {
-			res.json({
-				msg: "post API",
-			});
-		});
-
-		this.app.delete("/api", (req, res) => {
-			res.json({
-				msg: "delete API",
-			});
-		});
+		this.app.use(this.usuariosPath, require("../routes/user"));
 	}
 
 	listen() {
