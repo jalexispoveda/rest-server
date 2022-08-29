@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
+const { validarCampos } = require("../middlewares/validar-campos");
+
 const {
   getUsuarios,
   putUsuarios,
@@ -16,7 +18,15 @@ router.put("/:id", putUsuarios);
 
 router.post(
   "/",
-  [check("correo", "El correo no es valido").isEmail()],
+  [
+    check("name", "El nombre es obligatorio").notEmpty(),
+    check("password", "El password es obligatorio y mas de 6 letras")
+      .notEmpty()
+      .isLength({ min: 6 }),
+    check("correo", "El correo no es valido").isEmail(),
+    check("rol", "No es un rol valido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+    validarCampos,
+  ],
   postUsuarios
 );
 
