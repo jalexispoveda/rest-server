@@ -29,7 +29,7 @@ const postUsuarios = async (req, res = response) => {
 const putUsuarios = async (req, res = response) => {
 	const { id } = req.params;
 	//Estoy extrayendo propiedades que no necesito que se graben
-	const { password, google, ...resto } = req.body;
+	const { _id, password, google, ...resto } = req.body;
 
 	//TODO: Validar contra BD
 	if (password) {
