@@ -26,11 +26,25 @@ const postUsuarios = async (req, res = response) => {
 	});
 };
 
-const putUsuarios = (req, res = response) => {
+const putUsuarios = async (req, res = response) => {
 	const { id } = req.params;
+	//Estoy extrayendo propiedades que no necesito que se graben
+	const { password, google, ...resto } = req.body;
+
+	//TODO: Validar contra BD
+	if (password) {
+		//Encriptar la contraseña
+		const salt = bcryptjs.genSaltSync();
+		resto.password = bcryptjs.hashSync(password, salt);
+	}
+
+	//Busca el usuario, lo actualiza en db y me lo retorna
+	const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true });
+
 	res.json({
 		msg: "put API controller",
 		id,
+		usuario,
 	});
 };
 
