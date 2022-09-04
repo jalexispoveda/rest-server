@@ -4,14 +4,26 @@ const bcryptjs = require("bcryptjs");
 
 const getUsuarios = async (req = request, res = response) => {
   const { limite = 5, desde = 0 } = req.query;
+  // { estado: true } -> Asi se envian las condiciones en los querys
+  const query = { estado: true };
 
+  //NOTE: Hay dos formas de traer la data, las promesas no bloquean pero el await si,
+  //por eso es mas rapido encadenar las peticiones en promise.all y retornarlo
   //skip envia desde el valor que le pongamos (ejemplo desde el registro #3 hasta el limite)
   //limit -> limita la cantidad de registros a mostrar
-  const usuarios = await Usuario.find().skip(desde).limit(limite);
+
+  // const usuarios = await Usuario.find(query).skip(desde).limit(limite);
+  // const total = await Usuario.countDocuments(query);
+
+  const promises = await Promise.all([
+    Usuario.countDocuments(query),
+    Usuario.find(query).skip(desde).limit(limite),
+  ]);
+
+  console.log(promises);
 
   res.json({
-    // queryParams,
-    usuarios,
+    promises,
   });
 };
 
