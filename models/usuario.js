@@ -36,7 +36,10 @@ const usuarioSchema = new Schema({
 //Se necesita una funcion normal porque la de flecha saca el this del scope de la funcion
 //Metodo para retornar el usuario sin mostrar la password en el objeto
 usuarioSchema.methods.toJSON = function () {
-	const { __v, password, ...usuario } = this.toObject();
+	//Metodo para remover propiedades al momento de mostrar
+	const { __v, password, _id, ...usuario } = this.toObject();
+	//cambiando nombre de la propiedad de mongo
+	usuario.uid = _id;
 	return usuario;
 };
 
